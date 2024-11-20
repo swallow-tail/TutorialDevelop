@@ -41,7 +41,6 @@ public class UserController {
         return "user/register";
     }
 
-    // ----- 変更ここから -----
     /** User登録処理 */
     @PostMapping("/register")
     public String postRegister(@Validated User user, BindingResult res, Model model) {
@@ -54,19 +53,18 @@ public class UserController {
         // 一覧画面にリダイレクト
         return "redirect:/user/list";
     }
-    // ----- 変更ここまで -----
 
     /** User更新画面を表示 */
     @GetMapping("/update/{id}/")
     public String getUser(@PathVariable("id") Integer id, Model model, User user) {
-        if(user != null) {
-         // Modelに登録
+        if(id != null) {
+        // サービスから取得したUserをModelに登録
         model.addAttribute("user", service.getUser(id));
         }
-        else if(user == null) {
-        // Modelに登録
-        model.addAttribute("user", service.getUser(id));
-       }
+        if(id == null) {
+        // postUser()から渡された引数のuserをModelに登録
+        model.addAttribute("user", user);
+        }
         // User更新画面に遷移
         return "user/update";
     }
